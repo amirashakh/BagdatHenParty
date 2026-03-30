@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bagdat's Bachelorette ♡</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blush: #f2c4c0;
+    --rose: #d9837a;
+    --deep: #5c2d2a;
+    --cream: #fdf6f0;
+    --gold: #c9a96e;
+    --text: #3a1f1c;
+    --muted: #9e6e68;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--rose); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease;
+    mix-blend-mode: multiply;
+  }
+
+  .petal-field { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+
+  .petal {
+    position: absolute; top: -60px;
+    width: 14px; height: 20px;
+    background: radial-gradient(ellipse at 40% 30%, #f9ddd8, #e8a09a);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0; animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(40px); opacity: 0; }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 60px 24px;
+    overflow: hidden; z-index: 1;
+  }
+
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(242,196,192,0.45) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,169,110,0.2) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  .ornament {
+    position: absolute; width: 420px; height: 420px;
+    border-radius: 50%; border: 1px solid rgba(201,169,110,0.25);
+    animation: spin 30s linear infinite;
+  }
+  .ornament::before {
+    content: ''; position: absolute; inset: 24px;
+    border-radius: 50%; border: 1px dashed rgba(217,131,122,0.3);
+  }
+  .ornament-2 {
+    width: 600px; height: 600px;
+    animation-direction: reverse; animation-duration: 50s;
+    border-color: rgba(242,196,192,0.2);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 32px;
+    animation: fadeUp 1s ease both;
+  }
+
+  .name-wrap { overflow: hidden; margin-bottom: 12px; animation: fadeUp 1s 0.2s ease both; }
+
+  .bride-name {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(72px, 14vw, 130px); font-weight: 300;
+    line-height: 1; color: var(--deep); display: block;
+  }
+
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 3vw, 26px); font-weight: 300;
+    letter-spacing: 0.1em; color: var(--rose); margin-bottom: 48px;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+
+  .divider {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 48px;
+    animation: fadeUp 1s 0.5s ease both;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0.5; animation: bounce 2s ease infinite;
+  }
+  .scroll-hint span { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; }
+  .scroll-hint svg { width: 16px; }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; padding: 80px 24px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    opacity: 0; transform: translateY(20px); transition: all 0.7s ease;
+  }
+  .section-label.visible { opacity: 1; transform: translateY(0); }
+
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 54px); font-weight: 300; font-style: italic;
+    color: var(--deep); margin-bottom: 48px;
+    opacity: 0; transform: translateY(20px); transition: all 0.8s ease;
+  }
+  .section-heading.visible { opacity: 1; transform: translateY(0); }
+
+  /* DETAILS */
+  .details-section { background: var(--deep); color: var(--cream); text-align: center; }
+  .details-section .section-label { color: var(--blush); }
+
+  .details-grid {
+    display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    gap: 0; margin: 40px 0 0;
+  }
+
+  .detail-item {
+    padding: 0 24px;
+    opacity: 0; transform: translateY(20px); transition: all 0.7s ease;
+  }
+  .detail-item.visible { opacity: 1; transform: translateY(0); }
+  .detail-item:nth-child(3) { transition-delay: 0.1s; }
+  .detail-item:nth-child(5) { transition-delay: 0.2s; }
+
+  .detail-sep { width: 1px; background: rgba(255,255,255,0.12); }
+  .detail-icon { font-size: 22px; margin-bottom: 12px; display: block; }
+  .detail-label {
+    font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--blush); margin-bottom: 8px; display: block;
+  }
+  .detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-style: italic; color: white; line-height: 1.4;
+  }
+
+  .map-link {
+    display: inline-block; margin-top: 10px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blush); text-decoration: none;
+    border-bottom: 1px solid rgba(242,196,192,0.35);
+    transition: color 0.3s, border-color 0.3s;
+    cursor: pointer;
+  }
+  .map-link:hover { color: white; border-color: white; }
+
+  /* PROGRAM */
+  .program-section { text-align: center; }
+
+  .timeline {
+    position: relative; text-align: left;
+    max-width: 480px; margin: 0 auto;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 54px; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--blush) 10%, var(--blush) 90%, transparent);
+  }
+
+  .timeline-item {
+    display: grid; grid-template-columns: 108px 1fr;
+    gap: 0 24px; margin-bottom: 40px;
+    opacity: 0; transform: translateX(-20px); transition: all 0.7s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item:nth-child(2) { transition-delay: 0.1s; }
+  .timeline-item:nth-child(3) { transition-delay: 0.2s; }
+  .timeline-item:nth-child(4) { transition-delay: 0.3s; }
+
+  .tl-time {
+    text-align: right; padding-right: 32px;
+    font-size: 12px; letter-spacing: 0.1em; color: var(--muted); padding-top: 4px;
+  }
+
+  .tl-dot { position: relative; }
+  .tl-dot::before {
+    content: ''; position: absolute; left: -16px; top: 8px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--rose); box-shadow: 0 0 0 3px rgba(217,131,122,0.2);
+  }
+
+  .tl-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-style: italic; color: var(--deep); margin-bottom: 4px;
+  }
+  .tl-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* DRESS CODE */
+  .dresscode-section {
+    background: linear-gradient(135deg, #fef0ec 0%, #fdf6f0 50%, #fce8e0 100%);
+    text-align: center;
+  }
+
+  .palette { display: flex; gap: 12px; justify-content: center; margin: 32px 0 16px; }
+
+  .swatch {
+    width: 52px; height: 52px; border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease; cursor: none;
+  }
+  .swatch:hover { transform: scale(1.15); }
+
+  .palette-note { font-size: 12px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+
+  /* WISHES */
+  .wishes-section { background: var(--cream); text-align: center; }
+
+  .wish-form {
+    background: white;
+    border: 1px solid rgba(217,131,122,0.2);
+    border-radius: 2px;
+    padding: 36px;
+    margin-bottom: 48px;
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.8s 0.1s ease;
+  }
+  .wish-form.visible { opacity: 1; transform: translateY(0); }
+
+  .wish-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .wish-input, .wish-textarea {
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid rgba(217,131,122,0.3);
+    border-radius: 2px;
+    padding: 14px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px; font-weight: 300;
+    color: var(--text); outline: none;
+    transition: border-color 0.3s;
+    cursor: auto; resize: none;
+  }
+  .wish-input::placeholder, .wish-textarea::placeholder { color: var(--muted); opacity: 0.6; }
+  .wish-input:focus, .wish-textarea:focus { border-color: var(--rose); }
+  .wish-textarea { min-height: 100px; }
+
+  .wish-submit {
+    margin-top: 16px;
+    padding: 14px 40px;
+    background: transparent;
+    border: 1px solid var(--rose);
+    color: var(--rose);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; font-weight: 300;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: color 0.4s;
+  }
+  .wish-submit::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--rose);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease; z-index: -1;
+  }
+  .wish-submit:hover::before { transform: translateX(0); }
+  .wish-submit:hover { color: white; }
+  .wish-submit:disabled { opacity: 0.5; pointer-events: none; }
+
+  .wishes-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px; text-align: left;
+  }
+
+  .wish-card {
+    background: white;
+    border: 1px solid rgba(217,131,122,0.15);
+    border-radius: 2px; padding: 24px;
+    position: relative;
+    opacity: 0; transform: translateY(16px);
+    animation: cardIn 0.5s ease forwards;
+  }
+  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+
+  .wish-card::before {
+    content: '♡';
+    position: absolute; top: 16px; right: 18px;
+    font-size: 14px; color: var(--blush);
+  }
+
+  .wish-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic; color: var(--rose); margin-bottom: 10px;
+  }
+  .wish-card-text { font-size: 13px; line-height: 1.7; color: var(--muted); }
+
+  .ai-badge {
+    display: inline-block; margin-top: 10px;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); opacity: 0.7;
+  }
+
+  .wishes-empty {
+    grid-column: 1/-1; text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-style: italic;
+    color: var(--blush); padding: 40px;
+  }
+
+  .typing-indicator {
+    display: flex; gap: 6px; align-items: center;
+    justify-content: center; padding: 20px; grid-column: 1/-1;
+  }
+  .typing-indicator span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--blush); animation: pulse 1s ease infinite;
+  }
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50%       { transform: scale(1.3); opacity: 1; }
+  }
+
+  /* RSVP */
+  .rsvp-section { background: var(--deep); text-align: center; color: white; }
+  .rsvp-section .section-heading { color: var(--blush); }
+  .rsvp-section .section-label { color: rgba(255,255,255,0.4); }
+
+  .rsvp-text {
+    color: rgba(255,255,255,0.65); font-size: 15px; line-height: 1.8;
+    max-width: 400px; margin: 0 auto 40px;
+    opacity: 0; transition: all 0.8s 0.2s ease;
+  }
+  .rsvp-text.visible { opacity: 1; }
+
+  .btn {
+    display: inline-block; padding: 16px 48px;
+    border: 1px solid var(--blush); color: var(--blush);
+    font-family: 'Jost', sans-serif; font-weight: 300;
+    font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.4s;
+    position: relative; overflow: hidden; cursor: pointer;
+  }
+  .btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--blush);
+    transform: translateX(-100%); transition: transform 0.4s ease; z-index: -1;
+  }
+  .btn:hover::before { transform: translateX(0); }
+  .btn:hover { color: var(--deep); }
+
+  .contact-block {
+    margin-top: 60px; padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .contact-label {
+    font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 12px;
+  }
+  .contact-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-style: italic; color: white; margin-bottom: 4px;
+  }
+  .contact-phone { font-size: 14px; color: var(--blush); letter-spacing: 0.1em; }
+
+  footer {
+    text-align: center; padding: 32px; background: #1a0d0b;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.2); text-transform: uppercase;
+  }
+
+  @media (max-width: 520px) {
+    .details-grid { grid-template-columns: 1fr; gap: 32px; }
+    .detail-sep { display: none; }
+    .ornament { width: 280px; height: 280px; }
+    .ornament-2 { width: 380px; height: 380px; }
+    .wish-input-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="petal-field" id="petalField"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="ornament"></div>
+  <div class="ornament ornament-2"></div>
+  <div class="hero-content">
+    <p class="eyebrow">You are invited to</p>
+    <div class="name-wrap">
+      <span class="bride-name">Bagdat's</span>
+    </div>
+    <p class="subtitle">Bachelorette Party</p>
+    <div class="divider"></div>
+    <p style="font-size:14px; letter-spacing:0.2em; color:var(--muted); animation: fadeUp 1s 0.6s ease both; opacity:0">
+      April 11, 2026 &nbsp;·&nbsp; 16:30 &nbsp;·&nbsp; Almaty
+    </p>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- DETAILS -->
+<section class="details-section">
+  <div class="container">
+    <p class="section-label" data-animate>Event Details</p>
+    <div class="details-grid">
+      <div class="detail-item" data-animate>
+        <span class="detail-icon">🕟</span>
+        <span class="detail-label">Time</span>
+        <span class="detail-value">16:30</span>
+      </div>
+      <div class="detail-sep"></div>
+      <div class="detail-item" data-animate>
+        <span class="detail-icon">🏕️</span>
+        <span class="detail-label">Venue</span>
+        <span class="detail-value">Almaty Hills<br>Glamping</span>
+        <a class="map-link"
+           href="https://2gis.kz/almaty/geo/70000001101396508/76.885162,43.144632"
+           target="_blank" rel="noopener">
+          Open in 2GIS →
+        </a>
+      </div>
+      <div class="detail-sep"></div>
+      <div class="detail-item" data-animate>
+        <span class="detail-icon">✨</span>
+        <span class="detail-label">Vibe</span>
+        <span class="detail-value">Dinner<br>&amp; Dancing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section class="program-section">
+  <div class="container">
+    <p class="section-label" data-animate>The Schedule</p>
+    <h2 class="section-heading" data-animate>How the evening unfolds</h2>
+    <div class="timeline">
+      <div class="timeline-item" data-animate>
+        <span class="tl-time">16:30</span>
+        <div class="tl-dot">
+          <p class="tl-event">Welcome</p>
+          <p class="tl-desc">Arrival, welcome drinks, hugs and photos at the glamping grounds</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-animate>
+        <span class="tl-time">17:30</span>
+        <div class="tl-dot">
+          <p class="tl-event">Candlelit Dinner</p>
+          <p class="tl-desc">A gorgeous spread, heartfelt toasts and the best company</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-animate>
+        <span class="tl-time">19:00</span>
+        <div class="tl-dot">
+          <p class="tl-event">Games &amp; Surprises</p>
+          <p class="tl-desc">Fun activities, gifts and a little too much rosé</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-animate>
+        <span class="tl-time">21:00</span>
+        <div class="tl-dot">
+          <p class="tl-event">Dance the Night Away</p>
+          <p class="tl-desc">Music, lights, and a night none of us will ever forget</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRESS CODE -->
+<section class="dresscode-section">
+  <div class="container">
+    <p class="section-label" data-animate>Dress Code</p>
+    <h2 class="section-heading" data-animate>Blush &amp; Gold</h2>
+    <div class="palette" data-animate>
+      <div class="swatch" style="background:#f9ddd8;" title="Powder"></div>
+      <div class="swatch" style="background:#e8a09a;" title="Petal"></div>
+      <div class="swatch" style="background:#d9837a;" title="Rose"></div>
+      <div class="swatch" style="background:#c9a96e;" title="Gold"></div>
+      <div class="swatch" style="background:#f5e6d3;" title="Champagne"></div>
+    </div>
+    <p class="palette-note" data-animate>pastels · sequins · lace</p>
+    <p style="margin-top:24px; font-size:14px; color:var(--muted); line-height:1.8;" data-animate>
+      Come in whatever makes you feel beautiful —<br>
+      just embrace the soft and golden vibe 🌸
+    </p>
+  </div>
+</section>
+
+<!-- WISHES -->
+<section class="wishes-section">
+  <div class="container">
+    <p class="section-label" data-animate>Leave a Message</p>
+    <h2 class="section-heading" data-animate>Wishes for Bagdat</h2>
+    <p style="font-size:14px; color:var(--muted); margin-top:-24px; margin-bottom:40px; line-height:1.8; opacity:0; transform:translateY(16px); transition:all 0.7s 0.15s ease;" data-animate>
+      Share your love, a funny memory, or a little advice.<br>
+      Our AI will give your wish a poetic touch ✨
+    </p>
+
+    <div class="wish-form" data-animate>
+      <div class="wish-input-row">
+        <input class="wish-input" id="wishName" type="text" placeholder="Your name" maxlength="40" />
+        <input class="wish-input" id="wishEmoji" type="text" placeholder="Your emoji (optional)" maxlength="4" />
+      </div>
+      <textarea class="wish-textarea" id="wishText" placeholder="Write something beautiful for Bagdat..." maxlength="300"></textarea>
+      <br>
+      <button class="wish-submit" id="wishBtn" onclick="submitWish()">Send my wish 🌸</button>
+      <p id="wishError" style="color:var(--rose); font-size:12px; margin-top:12px; min-height:18px;"></p>
+    </div>
+
+    <div class="wishes-wall" id="wishesWall">
+      <div class="wishes-empty">Be the first to leave a wish for Bagdat ♡</div>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section class="rsvp-section">
+  <div class="container">
+    <p class="section-label" data-animate>RSVP</p>
+    <h2 class="section-heading" data-animate>Will you be there?</h2>
+    <p class="rsvp-text" data-animate>
+      Please confirm your attendance by April 1st<br>
+      so we can make everything perfect for you.
+    </p>
+    <a href="https://wa.me/77000000000?text=I'll+be+at+Bagdat's+bachelorette!+🌸"
+       class="btn" target="_blank" rel="noopener">
+      Count me in! 🥂
+    </a>
+    <div class="contact-block">
+      <p class="contact-label">Event Organiser</p>
+      <p class="contact-name">Anastasia</p>
+      <p class="contact-phone">+7 (900) 000-00-00</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Made with love for the most wonderful bride-to-be &nbsp;♡
+</footer>
+
+<script>
+  // ── Cursor ───────────────────────────────────────────────
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+
+  // ── Petals ───────────────────────────────────────────────
+  const field = document.getElementById('petalField');
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay    = (Math.random() * 12) + 's';
+    p.style.transform = `rotate(${Math.random()*360}deg) scale(${0.6 + Math.random()*0.8})`;
+    const hue = Math.random() > 0.5 ? '#f9ddd8' : '#fbbcb6';
+    p.style.background = `radial-gradient(ellipse at 40% 30%, ${hue}, #e8a09a)`;
+    field.appendChild(p);
+  }
+
+  // ── Scroll animations ────────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+  // ── Wishes ───────────────────────────────────────────────
+  const wishes = [];
+
+  function esc(str) {
+    return str
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderWishes() {
+    const wall = document.getElementById('wishesWall');
+    if (wishes.length === 0) {
+      wall.innerHTML = '<div class="wishes-empty">Be the first to leave a wish for Bagdat ♡</div>';
+      return;
+    }
+    wall.innerHTML = '';
+    wishes.forEach((w, i) => {
+      const card = document.createElement('div');
+      card.className = 'wish-card';
+      card.style.animationDelay = (i * 0.08) + 's';
+      card.innerHTML = `
+        <div class="wish-card-name">${w.emoji ? esc(w.emoji) + ' ' : ''}${esc(w.name)}</div>
+        <div class="wish-card-text">${esc(w.polished)}</div>
+        ${w.aiEnhanced ? '<span class="ai-badge">✦ polished with a little magic</span>' : ''}
+      `;
+      wall.appendChild(card);
+    });
+  }
+
+  function showTyping() {
+    const wall = document.getElementById('wishesWall');
+    const t = document.createElement('div');
+    t.className = 'typing-indicator'; t.id = 'typing';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    wall.innerHTML = '';
+    wall.appendChild(t);
+  }
+  function hideTyping() {
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+  }
+
+  async function polishWish(name, text) {
+    const prompt = `You are a warm, poetic assistant helping guests leave beautiful wishes for a bride named Bagdat at her bachelorette party.
+
+A guest named "${name}" wrote:
+"${text}"
+
+Rewrite it as a single short, heartfelt, slightly poetic message (2–4 sentences). Keep the original sentiment. Make it warm, celebratory and elegant. Return ONLY the polished wish text — nothing else.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 200,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await res.json();
+      const txt = data.content && data.content[0] && data.content[0].text;
+      if (txt) return { polished: txt.trim(), aiEnhanced: true };
+    } catch (_) {}
+    return { polished: text, aiEnhanced: false };
+  }
+
+  async function submitWish() {
+    const nameEl  = document.getElementById('wishName');
+    const textEl  = document.getElementById('wishText');
+    const emojiEl = document.getElementById('wishEmoji');
+    const btn     = document.getElementById('wishBtn');
+    const errEl   = document.getElementById('wishError');
+
+    const name  = nameEl.value.trim();
+    const text  = textEl.value.trim();
+    const emoji = emojiEl.value.trim();
+
+    errEl.textContent = '';
+
+    if (!name)          { errEl.textContent = 'Please enter your name 💕'; return; }
+    if (text.length < 10) { errEl.textContent = 'Write at least a few words for Bagdat 🌸'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Sprinkling magic…';
+
+    document.getElementById('wishesWall').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    showTyping();
+
+    const { polished, aiEnhanced } = await polishWish(name, text);
+
+    hideTyping();
+    wishes.unshift({ name, emoji, polished, aiEnhanced });
+    renderWishes();
+
+    nameEl.value = ''; textEl.value = ''; emojiEl.value = '';
+    btn.disabled = false;
+    btn.textContent = 'Send my wish 🌸';
+  }
+
+  renderWishes();
+</script>
+</body>
+</html>
